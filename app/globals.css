@@ -3,7 +3,7 @@
 :root {
   --bg: #fafaf7;
   --panel: #ffffff;
-  --ink: #1c1a16;
+  --ink: #1a1a1a;
   --ink-soft: #4a4a4a;
   --ink-muted: #8a8a85;
   --line: #e5e3dc;
@@ -12,6 +12,19 @@
   --ok: #0f6e56;
   --warn: #993c1d;
   --radius: 8px;
+
+  /* Engineered CV palette — forest green dark theme */
+  --cv-dark: #0f120f;
+  --cv-green: #1f6f3a;
+  --cv-green-light: #7fb888;
+  --cv-sage: #b5beac;
+  --cv-muted: #5b6360;
+  --cv-white: #fbfaf6;
+  --cv-text: #1a1d1a;
+  --cv-tag-bg: #e7e9e3;
+  --cv-badge-text: #d8e5cf;
+  --cv-border: #b5beac;
+  --cv-section-border: #e7e9e3;
 }
 
 * { box-sizing: border-box; }
@@ -83,10 +96,8 @@ textarea.large { min-height: 140px; }
 .login-card .subtitle { margin-bottom: 24px; }
 
 /* ==========================================================
-   CV PREVIEW — Engineered Design
-   Replica of cv-design.html: Inter + JetBrains Mono,
-   two-column header, numbered sections, metrics row,
-   skill tag grid, monospace bullets.
+   CV PREVIEW — Engineered Design (Forest Green Dark Theme)
+   Dark header + light body with green accents
    ========================================================== */
 
 .cv-wrap {
@@ -100,9 +111,9 @@ textarea.large { min-height: 140px; }
   overflow: hidden;
 }
 .cv {
-  padding: 14mm 16mm;
+  padding: 0;
   font-family: 'Inter', -apple-system, sans-serif;
-  color: #1c1a16;
+  color: var(--cv-text);
   line-height: 1.4;
   font-size: 9pt;
 }
@@ -110,12 +121,13 @@ textarea.large { min-height: 140px; }
 .cv-empty h2 { font-size: 16px; color: var(--ink-soft); margin: 0 0 8px; font-weight: 500; }
 .cv-empty p { font-size: 13px; margin: 0; max-width: 360px; margin: 0 auto; line-height: 1.6; }
 
-/* --- Header: two-column layout --- */
+/* --- DARK HEADER ZONE --- */
 .cv .cv-header {
+  background: var(--cv-dark);
+  padding: 14mm 16mm 10pt 16mm;
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 10pt;
 }
 .cv .cv-header-left { flex: 1; }
 .cv .cv-header-right {
@@ -123,62 +135,65 @@ textarea.large { min-height: 140px; }
   flex-shrink: 0;
 }
 
-/* Role tag */
+/* Role tag — green monospace */
 .cv .cv-role {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8.5pt;
   font-weight: 400;
-  color: #1c1a16;
+  color: var(--cv-green-light);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   margin: 0 0 4pt;
 }
 
-/* Name */
+/* Name — white/green on dark */
 .cv h1.cv-name {
   font-size: 24pt;
   font-weight: 700;
   letter-spacing: -0.02em;
   margin: 0 0 6pt;
-  color: #1c1a16;
+  color: var(--cv-white);
   line-height: 1;
 }
 
-/* Contact row */
+/* Contact row — sage monospace with ~/ prefix */
 .cv .cv-contact {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8.5pt;
-  color: #1c1a16;
+  color: var(--cv-sage);
   margin: 0;
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
   line-height: 1.4;
 }
+.cv .cv-contact span::before {
+  content: '~/ ';
+  opacity: 0.6;
+}
 
-/* Status box (right column) */
+/* Status box (right column) — on dark bg */
 .cv .cv-status-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8pt;
   letter-spacing: 0.16em;
-  color: #1c1a16;
+  color: var(--cv-green-light);
   margin: 0 0 2pt;
 }
 .cv .cv-status-value {
   font-size: 9.5pt;
-  color: #1c1a16;
+  color: var(--cv-white);
   margin: 0;
 }
 
-/* --- Metrics row --- */
+/* --- METRICS ROW — dark bg --- */
 .cv .cv-metrics {
+  background: var(--cv-dark);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
-  border-top: 1px solid #e5e3dc;
-  border-bottom: 1px solid #e5e3dc;
-  margin-bottom: 12pt;
-  padding: 8pt 0;
+  padding: 8pt 16mm 12pt 16mm;
+  border-top: 1px solid rgba(127, 184, 136, 0.2);
 }
 .cv .cv-metric { text-align: center; }
 .cv .cv-metric-value {
@@ -186,7 +201,7 @@ textarea.large { min-height: 140px; }
   font-size: 16pt;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #1c1a16;
+  color: var(--cv-white);
   display: block;
   line-height: 1;
   margin-bottom: 2pt;
@@ -194,50 +209,51 @@ textarea.large { min-height: 140px; }
 .cv .cv-metric-label {
   font-size: 7pt;
   letter-spacing: 0.06em;
-  color: #6a6a6a;
+  color: var(--cv-green-light);
   text-transform: uppercase;
   display: block;
 }
 
-/* --- Sections container --- */
+/* --- LIGHT BODY ZONE --- */
 .cv .cv-sections {
+  padding: 12pt 16mm 14mm 16mm;
   display: grid;
   gap: 12pt;
 }
 
-/* --- Section header: numbered --- */
+/* --- Section header: numbered with green --- */
 .cv .cv-section-header {
   display: flex;
   align-items: baseline;
   gap: 8px;
   margin-bottom: 6pt;
-  border-bottom: 1px solid #e5e3dc;
+  border-bottom: 1px solid var(--cv-section-border);
   padding-bottom: 3pt;
 }
 .cv .cv-section-num {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8pt;
-  color: #8a8a85;
+  color: var(--cv-green);
   letter-spacing: 0.1em;
 }
 .cv .cv-section-title {
   font-size: 10.5pt;
   font-weight: 700;
-  color: #1c1a16;
+  color: var(--cv-dark);
   letter-spacing: -0.005em;
 }
 .cv .cv-section-count {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8pt;
-  color: #8a8a85;
+  color: var(--cv-muted);
   margin-left: auto;
 }
 
-/* --- Summary / Profile --- */
+/* --- Summary --- */
 .cv .cv-summary {
   font-size: 9.5pt;
   line-height: 1.5;
-  color: #1c1a16;
+  color: var(--cv-text);
   margin: 0;
 }
 
@@ -254,32 +270,38 @@ textarea.large { min-height: 140px; }
 .cv .cv-item-title {
   font-size: 11pt;
   font-weight: 700;
-  color: #1c1a16;
+  color: var(--cv-dark);
   margin: 0;
   display: inline;
 }
 .cv .cv-item-client {
   font-size: 8.5pt;
   font-weight: 400;
-  color: #4a4a4a;
+  color: var(--cv-muted);
 }
+
+/* Dates — green monospace */
 .cv .cv-item-meta {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8pt;
-  color: #1c1a16;
+  color: var(--cv-green);
   white-space: nowrap;
 }
 
-/* Subtitle — role in monospace */
+/* Subtitle — badge style: light green on dark */
 .cv .cv-item-subtitle {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8.5pt;
-  color: #1c1a16;
-  margin: 1pt 0 3pt;
+  color: var(--cv-badge-text);
+  background: var(--cv-dark);
+  display: inline-block;
+  padding: 1pt 8pt;
+  border-radius: 2px;
+  margin: 2pt 0 3pt;
   letter-spacing: 0.01em;
 }
 
-/* Bullet lists — monospace like the design */
+/* Bullet lists — green monospace */
 .cv .cv-item ul {
   margin: 2pt 0 0;
   padding-left: 14px;
@@ -290,10 +312,10 @@ textarea.large { min-height: 140px; }
 .cv .cv-item ul li {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8.5pt;
-  color: #1c1a16;
+  color: var(--cv-green);
   line-height: 1.42;
 }
-.cv .cv-item ul li::marker { color: #8a8a85; }
+.cv .cv-item ul li::marker { color: var(--cv-green-light); }
 
 /* --- Skills grid --- */
 .cv .cv-skills-grid {
@@ -305,24 +327,30 @@ textarea.large { min-height: 140px; }
   flex: 1 1 140px;
   min-width: 0;
 }
+/* Skill category label — green monospace uppercase */
 .cv .cv-skill-group-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8pt;
   font-weight: 400;
-  color: #1c1a16;
+  color: var(--cv-green);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   display: block;
   margin-bottom: 3pt;
 }
+/* Skill tags — sage pill style */
 .cv .cv-skill-tags {
   display: flex;
   flex-direction: column;
-  gap: 1pt;
+  gap: 2pt;
 }
 .cv .cv-skill-tag {
   font-size: 8pt;
-  color: #1c1a16;
+  color: var(--cv-text);
+  background: var(--cv-tag-bg);
+  display: inline-block;
+  padding: 1pt 6pt;
+  border-radius: 2px;
   line-height: 1.4;
 }
 
@@ -336,16 +364,16 @@ textarea.large { min-height: 140px; }
 .cv .cv-cert-year {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8.5pt;
-  color: #1c1a16;
+  color: var(--cv-green);
   flex-shrink: 0;
 }
 .cv .cv-cert-name {
   font-size: 9pt;
-  color: #1c1a16;
+  color: var(--cv-dark);
 }
 .cv .cv-cert-issuer {
   font-size: 8pt;
-  color: #6a6a6a;
+  color: var(--cv-muted);
   margin-left: auto;
   flex-shrink: 0;
 }
@@ -359,45 +387,45 @@ textarea.large { min-height: 140px; }
 }
 .cv .cv-lang-name {
   font-size: 9pt;
-  color: #1c1a16;
+  color: var(--cv-dark);
   min-width: 55px;
 }
 .cv .cv-lang-bar {
   flex: 1;
   height: 3px;
-  background: #e5e3dc;
+  background: var(--cv-tag-bg);
   border-radius: 2px;
   overflow: hidden;
 }
 .cv .cv-lang-bar-fill {
   height: 100%;
-  background: #1c1a16;
+  background: var(--cv-green);
   border-radius: 2px;
 }
 .cv .cv-lang-level {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8pt;
-  color: #1c1a16;
+  color: var(--cv-green);
   min-width: 45px;
   text-align: right;
 }
 
-/* --- Formación simple --- */
+/* --- Formación --- */
 .cv .cv-edu-title {
   font-size: 10pt;
   font-weight: 700;
-  color: #1c1a16;
+  color: var(--cv-dark);
   margin: 0;
 }
 .cv .cv-edu-institution {
   font-size: 8.5pt;
-  color: #4a4a4a;
+  color: var(--cv-muted);
   margin: 0 0 1pt;
 }
 .cv .cv-edu-date {
   font-family: 'JetBrains Mono', monospace;
   font-size: 8pt;
-  color: #1c1a16;
+  color: var(--cv-green);
 }
 
 /* ============ PRINT — force ONE A4 page ============ */
@@ -408,6 +436,10 @@ textarea.large { min-height: 140px; }
   .sidebar, .main > .toolbar, .main > .status { display: none !important; }
   .main { padding: 0; }
   .cv-wrap { border: none; box-shadow: none; max-width: none; margin: 0; border-radius: 0; width: 210mm; height: 297mm; overflow: hidden; }
-  .cv { padding: 14mm 16mm; font-size: 9pt; height: 297mm; overflow: hidden; }
+  .cv { height: 297mm; overflow: hidden; }
   .cv .cv-item { page-break-inside: avoid; }
+  .cv .cv-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cv .cv-metrics { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cv .cv-item-subtitle { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cv .cv-skill-tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
