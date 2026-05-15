@@ -12,19 +12,6 @@
   --ok: #0f6e56;
   --warn: #993c1d;
   --radius: 8px;
-
-  /* Engineered CV palette — forest green dark theme */
-  --cv-dark: #0f120f;
-  --cv-green: #1f6f3a;
-  --cv-green-light: #7fb888;
-  --cv-sage: #b5beac;
-  --cv-muted: #5b6360;
-  --cv-white: #fbfaf6;
-  --cv-text: #1a1d1a;
-  --cv-tag-bg: #e7e9e3;
-  --cv-badge-text: #d8e5cf;
-  --cv-border: #b5beac;
-  --cv-section-border: #e7e9e3;
 }
 
 * { box-sizing: border-box; }
@@ -96,8 +83,9 @@ textarea.large { min-height: 140px; }
 .login-card .subtitle { margin-bottom: 24px; }
 
 /* ==========================================================
-   CV PREVIEW — Engineered Design (Forest Green Dark Theme)
-   Dark header + light body with green accents
+   CV PREVIEW — Modern Minimal
+   White bg, warm clay accent (#c25a3a), clean sections,
+   2-col experience grid, dotted separators
    ========================================================== */
 
 .cv-wrap {
@@ -111,321 +99,255 @@ textarea.large { min-height: 140px; }
   overflow: hidden;
 }
 .cv {
-  padding: 0;
+  padding: 36px 48px 32px 48px;
   font-family: 'Inter', -apple-system, sans-serif;
-  color: var(--cv-text);
-  line-height: 1.4;
+  color: #15171a;
+  line-height: 1.45;
   font-size: 9pt;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 .cv-empty { padding: 80px 40px; text-align: center; color: var(--ink-muted); }
 .cv-empty h2 { font-size: 16px; color: var(--ink-soft); margin: 0 0 8px; font-weight: 500; }
 .cv-empty p { font-size: 13px; margin: 0; max-width: 360px; margin: 0 auto; line-height: 1.6; }
 
-/* --- DARK HEADER ZONE --- */
+/* --- Header --- */
 .cv .cv-header {
-  background: var(--cv-dark);
-  padding: 14mm 16mm 10pt 16mm;
   display: flex;
   justify-content: space-between;
-  gap: 24px;
+  align-items: flex-end;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e6e3dd;
 }
-.cv .cv-header-left { flex: 1; }
-.cv .cv-header-right {
-  text-align: right;
+.cv h1.cv-name {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: #15171a;
+}
+.cv .cv-role-line {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cv .cv-role-dot {
+  width: 5px;
+  height: 5px;
+  background: #c25a3a;
+  border-radius: 50%;
   flex-shrink: 0;
 }
-
-/* Role tag — green monospace */
 .cv .cv-role {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8.5pt;
-  font-weight: 400;
-  color: var(--cv-green-light);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  margin: 0 0 4pt;
+  font-size: 11.5px;
+  color: #15171a;
+  font-weight: 500;
+  margin: 0;
 }
-
-/* Name — white/green on dark */
-.cv h1.cv-name {
-  font-size: 24pt;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0 0 6pt;
-  color: var(--cv-white);
-  line-height: 1;
+.cv .cv-location {
+  font-size: 9.5px;
+  color: #6b6f76;
 }
-
-/* Contact row — sage monospace with ~/ prefix */
+.cv .cv-role-sep {
+  color: #cfd1d6;
+}
 .cv .cv-contact {
+  text-align: right;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8.5pt;
-  color: var(--cv-sage);
-  margin: 0;
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  line-height: 1.4;
+  font-size: 8.5px;
+  color: #15171a;
+  line-height: 1.6;
 }
-.cv .cv-contact span::before {
-  content: '~/ ';
-  opacity: 0.6;
-}
-
-/* Status box (right column) — on dark bg */
-.cv .cv-status-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8pt;
-  letter-spacing: 0.16em;
-  color: var(--cv-green-light);
-  margin: 0 0 2pt;
-}
-.cv .cv-status-value {
-  font-size: 9.5pt;
-  color: var(--cv-white);
-  margin: 0;
-}
-
-/* --- METRICS ROW — dark bg --- */
-.cv .cv-metrics {
-  background: var(--cv-dark);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  padding: 8pt 16mm 12pt 16mm;
-  border-top: 1px solid rgba(127, 184, 136, 0.2);
-}
-.cv .cv-metric { text-align: center; }
-.cv .cv-metric-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 16pt;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--cv-white);
-  display: block;
-  line-height: 1;
-  margin-bottom: 2pt;
-}
-.cv .cv-metric-label {
-  font-size: 7pt;
-  letter-spacing: 0.06em;
-  color: var(--cv-green-light);
-  text-transform: uppercase;
-  display: block;
-}
-
-/* --- LIGHT BODY ZONE --- */
-.cv .cv-sections {
-  padding: 12pt 16mm 14mm 16mm;
-  display: grid;
-  gap: 12pt;
-}
-
-/* --- Section header: numbered with green --- */
-.cv .cv-section-header {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-bottom: 6pt;
-  border-bottom: 1px solid var(--cv-section-border);
-  padding-bottom: 3pt;
-}
-.cv .cv-section-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8pt;
-  color: var(--cv-green);
-  letter-spacing: 0.1em;
-}
-.cv .cv-section-title {
-  font-size: 10.5pt;
-  font-weight: 700;
-  color: var(--cv-dark);
-  letter-spacing: -0.005em;
-}
-.cv .cv-section-count {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8pt;
-  color: var(--cv-muted);
-  margin-left: auto;
+.cv .cv-contact-link {
+  color: #c25a3a;
 }
 
 /* --- Summary --- */
 .cv .cv-summary {
-  font-size: 9.5pt;
-  line-height: 1.5;
-  color: var(--cv-text);
   margin: 0;
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: #2a2d33;
+  max-width: 660px;
 }
 
-/* --- Experience items --- */
-.cv .cv-item { margin-bottom: 8pt; }
-.cv .cv-item:last-child { margin-bottom: 0; }
-.cv .cv-item-header {
+/* --- Section header: accent line + label + rule --- */
+.cv .cv-sec-header {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 0;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
 }
-.cv .cv-item-title {
-  font-size: 11pt;
-  font-weight: 700;
-  color: var(--cv-dark);
-  margin: 0;
-  display: inline;
+.cv .cv-sec-accent {
+  width: 18px;
+  height: 1px;
+  background: #c25a3a;
+  flex-shrink: 0;
 }
-.cv .cv-item-client {
-  font-size: 8.5pt;
-  font-weight: 400;
-  color: var(--cv-muted);
-}
-
-/* Dates — green monospace */
-.cv .cv-item-meta {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8pt;
-  color: var(--cv-green);
+.cv .cv-sec-label {
+  font-size: 8.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #15171a;
+  font-weight: 600;
   white-space: nowrap;
 }
-
-/* Subtitle — badge style: light green on dark */
-.cv .cv-item-subtitle {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8.5pt;
-  color: var(--cv-badge-text);
-  background: var(--cv-dark);
-  display: inline-block;
-  padding: 1pt 8pt;
-  border-radius: 2px;
-  margin: 2pt 0 3pt;
-  letter-spacing: 0.01em;
+.cv .cv-sec-rule {
+  flex: 1;
+  height: 1px;
+  background: #e6e3dd;
 }
 
-/* Bullet lists — green monospace */
-.cv .cv-item ul {
-  margin: 2pt 0 0;
-  padding-left: 14px;
+/* --- Experience: 2-col grid --- */
+.cv .cv-job {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dotted #e6e3dd;
+}
+.cv .cv-job:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+.cv .cv-job-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  color: #6b6f76;
+  letter-spacing: 0.04em;
+}
+.cv .cv-job-company {
+  margin-top: 5px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #15171a;
+}
+.cv .cv-job-client {
+  font-size: 8px;
+  color: #8a8d94;
+  margin-top: 1px;
+}
+.cv .cv-job-role {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #15171a;
+  margin-bottom: 5px;
+  letter-spacing: -0.005em;
+}
+.cv .cv-job-bullets {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 2pt;
+  gap: 2px;
 }
-.cv .cv-item ul li {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8.5pt;
-  color: var(--cv-green);
+.cv .cv-job-bullets li {
+  position: relative;
+  padding-left: 11px;
+  font-size: 8.8px;
+  color: #2a2d33;
   line-height: 1.42;
 }
-.cv .cv-item ul li::marker { color: var(--cv-green-light); }
+.cv .cv-job-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 5px;
+  height: 1px;
+  background: #c25a3a;
+}
 
-/* --- Skills grid --- */
-.cv .cv-skills-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8pt;
+/* --- Footer: 2-col layout --- */
+.cv .cv-footer {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 28px;
 }
-.cv .cv-skill-group {
-  flex: 1 1 140px;
-  min-width: 0;
-}
-/* Skill category label — green monospace uppercase */
-.cv .cv-skill-group-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8pt;
-  font-weight: 400;
-  color: var(--cv-green);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  display: block;
-  margin-bottom: 3pt;
-}
-/* Skill tags — sage pill style */
-.cv .cv-skill-tags {
+.cv .cv-footer-right {
   display: flex;
   flex-direction: column;
-  gap: 2pt;
+  gap: 12px;
 }
-.cv .cv-skill-tag {
-  font-size: 8pt;
-  color: var(--cv-text);
-  background: var(--cv-tag-bg);
-  display: inline-block;
-  padding: 1pt 6pt;
-  border-radius: 2px;
-  line-height: 1.4;
+
+/* --- Skills: inline grid rows --- */
+.cv .cv-skills {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cv .cv-skill-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+.cv .cv-skill-cat {
+  font-size: 8.5px;
+  font-weight: 600;
+  color: #15171a;
+}
+.cv .cv-skill-items {
+  font-size: 8.5px;
+  color: #4a4e55;
+  line-height: 1.45;
 }
 
 /* --- Certifications --- */
 .cv .cv-cert {
   display: flex;
-  gap: 8px;
+  justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 3pt;
+  padding: 2px 0;
+  border-bottom: 1px dotted #e6e3dd;
+}
+.cv .cv-cert-name {
+  font-size: 9px;
+  color: #15171a;
+  font-weight: 500;
+}
+.cv .cv-cert-issuer {
+  font-size: 8px;
+  color: #6b6f76;
 }
 .cv .cv-cert-year {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8.5pt;
-  color: var(--cv-green);
-  flex-shrink: 0;
-}
-.cv .cv-cert-name {
-  font-size: 9pt;
-  color: var(--cv-dark);
-}
-.cv .cv-cert-issuer {
-  font-size: 8pt;
-  color: var(--cv-muted);
-  margin-left: auto;
+  font-size: 8.5px;
+  color: #c25a3a;
   flex-shrink: 0;
 }
 
 /* --- Languages --- */
-.cv .cv-lang-row {
+.cv .cv-lang {
   display: flex;
-  gap: 8px;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 3pt;
+  padding: 1px 0;
 }
 .cv .cv-lang-name {
-  font-size: 9pt;
-  color: var(--cv-dark);
-  min-width: 55px;
-}
-.cv .cv-lang-bar {
-  flex: 1;
-  height: 3px;
-  background: var(--cv-tag-bg);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.cv .cv-lang-bar-fill {
-  height: 100%;
-  background: var(--cv-green);
-  border-radius: 2px;
+  font-size: 9px;
+  color: #15171a;
 }
 .cv .cv-lang-level {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8pt;
-  color: var(--cv-green);
-  min-width: 45px;
-  text-align: right;
+  font-size: 8.5px;
+  color: #6b6f76;
 }
 
-/* --- Formación --- */
+/* --- Education --- */
 .cv .cv-edu-title {
-  font-size: 10pt;
-  font-weight: 700;
-  color: var(--cv-dark);
-  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
+  color: #15171a;
 }
-.cv .cv-edu-institution {
-  font-size: 8.5pt;
-  color: var(--cv-muted);
-  margin: 0 0 1pt;
-}
-.cv .cv-edu-date {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 8pt;
-  color: var(--cv-green);
+.cv .cv-edu-sub {
+  font-size: 8.5px;
+  color: #6b6f76;
+  margin-top: 1px;
 }
 
 /* ============ PRINT — force ONE A4 page ============ */
@@ -437,9 +359,5 @@ textarea.large { min-height: 140px; }
   .main { padding: 0; }
   .cv-wrap { border: none; box-shadow: none; max-width: none; margin: 0; border-radius: 0; width: 210mm; height: 297mm; overflow: hidden; }
   .cv { height: 297mm; overflow: hidden; }
-  .cv .cv-item { page-break-inside: avoid; }
-  .cv .cv-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .cv .cv-metrics { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .cv .cv-item-subtitle { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .cv .cv-skill-tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cv .cv-job { page-break-inside: avoid; }
 }

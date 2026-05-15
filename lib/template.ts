@@ -1,5 +1,5 @@
-// Server-side HTML renderer for the Engineered CV design.
-// The model returns JSON data, this function builds the exact HTML.
+// Server-side HTML renderer — Modern Minimal design
+// White bg, warm clay accent (#c25a3a), 2-col experience, dotted separators
 
 export interface CvData {
   name: string;
@@ -25,150 +25,131 @@ function esc(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function sectionHeader(label: string): string {
+  return `    <div class="cv-sec-header">
+      <div class="cv-sec-accent"></div>
+      <div class="cv-sec-label">${esc(label)}</div>
+      <div class="cv-sec-rule"></div>
+    </div>`;
+}
+
 export function renderCvHtml(d: CvData): string {
-  const pad = (n: number) => String(n).padStart(2, '0');
-  let num = 1;
+  // Header
+  const contactLines: string[] = [];
+  if (d.contact.email) contactLines.push(`<div>${esc(d.contact.email)}</div>`);
+  if (d.contact.phone) contactLines.push(`<div>${esc(d.contact.phone)}</div>`);
+  if (d.contact.linkedin) contactLines.push(`<div class="cv-contact-link">${esc(d.contact.linkedin)}</div>`);
 
-  // Contact
-  const contactSpans = [d.contact.email, d.contact.phone, d.contact.location, d.contact.linkedin]
-    .filter(Boolean)
-    .map(c => `<span>${esc(c!)}</span>`)
-    .join('\n        ');
-
-  // Metrics
-  const metricsHtml = d.metrics.slice(0, 4).map(m =>
-    `      <div class="cv-metric">
-        <span class="cv-metric-value">${esc(m.value)}</span>
-        <span class="cv-metric-label">${esc(m.label)}</span>
-      </div>`
-  ).join('\n');
-
-  // Sections
-  const sections: string[] = [];
-
-  // 01 Perfil
-  sections.push(`    <section>
-      <div class="cv-section-header">
-        <span class="cv-section-num">${pad(num++)}</span>
-        <span class="cv-section-title">Perfil</span>
-      </div>
-      <p class="cv-summary">${esc(d.summary)}</p>
-    </section>`);
-
-  // 02 Experiencia
-  const expItems = d.experience.map(exp => {
-    const clientHtml = exp.client ? ` <span class="cv-item-client">${esc(exp.client)}</span>` : '';
-    const bulletsHtml = exp.bullets.map(b => `          <li>${esc(b)}</li>`).join('\n');
-    return `      <div class="cv-item">
-        <div class="cv-item-header">
-          <div><span class="cv-item-title">${esc(exp.company)}</span>${clientHtml}</div>
-          <span class="cv-item-meta">${esc(exp.date)}</span>
+  // Experience
+  const jobs = d.experience.map((exp, i) => {
+    const bullets = exp.bullets.map(b => `          <li>${esc(b)}</li>`).join('\n');
+    const clientHtml = exp.client ? `\n        <div class="cv-job-client">${esc(exp.client)}</div>` : '';
+    return `      <div class="cv-job">
+        <div>
+          <div class="cv-job-date">${esc(exp.date)}</div>
+          <div class="cv-job-company">${esc(exp.company)}</div>${clientHtml}
         </div>
-        <p class="cv-item-subtitle">${esc(exp.role)}</p>
-        <ul>
-${bulletsHtml}
-        </ul>
+        <div>
+          <div class="cv-job-role">${esc(exp.role)}</div>
+          <ul class="cv-job-bullets">
+${bullets}
+          </ul>
+        </div>
       </div>`;
   }).join('\n');
 
-  sections.push(`    <section>
-      <div class="cv-section-header">
-        <span class="cv-section-num">${pad(num++)}</span>
-        <span class="cv-section-title">Experiencia profesional</span>
-        <span class="cv-section-count">${d.experience.length} roles</span>
-      </div>
-${expItems}
-    </section>`);
-
-  // 03 Stack técnico
-  const skillGroups = d.skills.map(sg => {
-    const tags = sg.items.map(s => `          <span class="cv-skill-tag">${esc(s)}</span>`).join('\n');
-    return `        <div class="cv-skill-group">
-          <span class="cv-skill-group-label">${esc(sg.category)}</span>
-          <div class="cv-skill-tags">
-${tags}
-          </div>
-        </div>`;
-  }).join('\n');
-
-  sections.push(`    <section>
-      <div class="cv-section-header">
-        <span class="cv-section-num">${pad(num++)}</span>
-        <span class="cv-section-title">Stack técnico</span>
-      </div>
-      <div class="cv-skills-grid">
-${skillGroups}
-      </div>
-    </section>`);
-
-  // Certificaciones (optional)
-  if (d.certifications && d.certifications.length > 0) {
-    const certs = d.certifications.map(c =>
-      `      <div class="cv-cert">
-        <span class="cv-cert-year">${esc(c.year)}</span>
-        <span class="cv-cert-name">${esc(c.name)}</span>
-        <span class="cv-cert-issuer">${esc(c.issuer)}</span>
-      </div>`
-    ).join('\n');
-    sections.push(`    <section>
-      <div class="cv-section-header">
-        <span class="cv-section-num">${pad(num++)}</span>
-        <span class="cv-section-title">Certificaciones</span>
-      </div>
-${certs}
-    </section>`);
-  }
-
-  // Formación (optional)
-  if (d.education) {
-    sections.push(`    <section>
-      <div class="cv-section-header">
-        <span class="cv-section-num">${pad(num++)}</span>
-        <span class="cv-section-title">Formación</span>
-      </div>
-      <div class="cv-edu-title">${esc(d.education.title)}</div>
-      <div class="cv-edu-institution">${esc(d.education.institution)}</div>${d.education.date ? `\n      <div class="cv-edu-date">${esc(d.education.date)}</div>` : ''}
-    </section>`);
-  }
-
-  // Idiomas
-  const langs = d.languages.map(l =>
-    `      <div class="cv-lang-row">
-        <span class="cv-lang-name">${esc(l.name)}</span>
-        <div class="cv-lang-bar"><div class="cv-lang-bar-fill" style="width:${Math.min(100, Math.max(0, l.percent))}%"></div></div>
-        <span class="cv-lang-level">${esc(l.level)}</span>
+  // Skills
+  const skillRows = d.skills.map(sg =>
+    `      <div class="cv-skill-row">
+        <div class="cv-skill-cat">${esc(sg.category)}</div>
+        <div class="cv-skill-items">${sg.items.map(s => esc(s)).join(', ')}</div>
       </div>`
   ).join('\n');
 
-  sections.push(`    <section>
-      <div class="cv-section-header">
-        <span class="cv-section-num">${pad(num++)}</span>
-        <span class="cv-section-title">Idiomas</span>
-      </div>
-${langs}
-    </section>`);
+  // Certifications
+  let certsHtml = '';
+  if (d.certifications && d.certifications.length > 0) {
+    const certs = d.certifications.map(c =>
+      `      <div class="cv-cert">
+        <div>
+          <div class="cv-cert-name">${esc(c.name)}</div>
+          <div class="cv-cert-issuer">${esc(c.issuer)}</div>
+        </div>
+        <div class="cv-cert-year">${esc(c.year)}</div>
+      </div>`
+    ).join('\n');
+    certsHtml = `    <section>
+${sectionHeader('Certificaciones')}
+${certs}
+    </section>`;
+  }
+
+  // Education
+  let eduHtml = '';
+  if (d.education) {
+    const dateLine = d.education.date
+      ? ` · <span style="font-family:'JetBrains Mono',monospace;font-size:8px">${esc(d.education.date)}</span>`
+      : '';
+    eduHtml = `    <section>
+${sectionHeader('Formación')}
+      <div class="cv-edu-title">${esc(d.education.title)}</div>
+      <div class="cv-edu-sub">${esc(d.education.institution)}${dateLine}</div>
+    </section>`;
+  }
+
+  // Languages
+  const langs = d.languages.map(l =>
+    `      <div class="cv-lang">
+        <div class="cv-lang-name">${esc(l.name)}</div>
+        <div class="cv-lang-level">${esc(l.level)}</div>
+      </div>`
+  ).join('\n');
+
+  const location = d.contact.location || d.status || '';
 
   return `<div class="cv">
-  <div class="cv-header">
-    <div class="cv-header-left">
-      <p class="cv-role">[ ${esc(d.role)} ]</p>
+  <header class="cv-header">
+    <div>
       <h1 class="cv-name">${esc(d.name)}</h1>
-      <div class="cv-contact">
-        ${contactSpans}
+      <div class="cv-role-line">
+        <span class="cv-role-dot"></span>
+        <span class="cv-role">${esc(d.role)}</span>
+        <span class="cv-role-sep">·</span>
+        <span class="cv-location">${esc(location)}</span>
       </div>
     </div>
-    <div class="cv-header-right">
-      <p class="cv-status-label">STATUS</p>
-      <p class="cv-status-value">${esc(d.status)}</p>
+    <div class="cv-contact">
+${contactLines.map(l => '      ' + l).join('\n')}
     </div>
-  </div>
+  </header>
 
-  <div class="cv-metrics">
-${metricsHtml}
-  </div>
+  <section>
+    <p class="cv-summary">${esc(d.summary)}</p>
+  </section>
 
-  <div class="cv-sections">
-${sections.join('\n\n')}
+  <section>
+${sectionHeader('Experiencia')}
+${jobs}
+  </section>
+
+  <div class="cv-footer">
+    <section>
+${sectionHeader('Habilidades técnicas')}
+      <div class="cv-skills">
+${skillRows}
+      </div>
+    </section>
+
+    <div class="cv-footer-right">
+${certsHtml}
+
+${eduHtml}
+
+      <section>
+${sectionHeader('Idiomas')}
+${langs}
+      </section>
+    </div>
   </div>
 </div>`;
 }
