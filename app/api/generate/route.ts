@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'ANTHROPIC_API_KEY no configurada' }, { status: 500 });
     }
 
-    const { jobOffer, lang } = await req.json();
+    const { jobOffer, lang, reduceMore } = await req.json();
     if (typeof jobOffer !== 'string' || jobOffer.trim().length < 50) {
       return NextResponse.json({ error: 'Oferta demasiado corta' }, { status: 400 });
     }
@@ -32,12 +32,12 @@ export async function POST(req: Request) {
       );
     }
 
-    const prompt = buildCvPrompt(masterCv, jobOffer, lang || 'español');
+    const prompt = buildCvPrompt(masterCv, jobOffer, lang || 'español', reduceMore === true);
 
     const client = new Anthropic({ apiKey });
     const msg = await client.messages.create({
-      model: 'claude-sonnet-4-5',
-      max_tokens: 4000,
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 2500,
       messages: [{ role: 'user', content: prompt }],
     });
 

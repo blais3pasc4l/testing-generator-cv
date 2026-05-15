@@ -45,7 +45,7 @@ export default function Generator() {
     return () => { if (saveTimer.current) clearTimeout(saveTimer.current); };
   }, [masterCv, savedCv]);
 
-  async function handleGenerate() {
+  async function handleGenerate(reduceMore = false) {
     if (masterCv.trim().length < 100) {
       setStatus({ msg: '⚠ El CV maestro está muy corto. Pega toda tu información profesional.', type: 'error' });
       return;
@@ -55,13 +55,13 @@ export default function Generator() {
       return;
     }
     setGenerating(true);
-    setStatus({ msg: 'Pensando, seleccionando experiencia relevante y redactando… (15-30s)', type: 'loading' });
+    setStatus({ msg: reduceMore ? 'Regenerando más corto…' : 'Pensando, seleccionando experiencia relevante y redactando… (15-30s)', type: 'loading' });
 
     try {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jobOffer, lang: targetLang }),
+        body: JSON.stringify({ jobOffer, lang: targetLang, reduceMore }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error');
@@ -136,7 +136,7 @@ export default function Generator() {
           />
         </div>
 
-        <button className="btn-primary" onClick={handleGenerate} disabled={generating}>
+        <button className="btn-primary" onClick={() => handleGenerate()} disabled={generating}>
           {generating ? 'Generando…' : 'Generar CV personalizado'}
         </button>
 
@@ -148,6 +148,11 @@ export default function Generator() {
       <main className="main">
         <div className="toolbar">
           <button className="btn-secondary" onClick={handlePrint}>Imprimir / Guardar PDF</button>
+          {cvHtml && (
+            <button className="btn-secondary" onClick={() => handleGenerate(true)} disabled={generating}>
+              {generating ? 'Regenerando…' : 'Regenerar más corto'}
+            </button>
+          )}
           <button className="btn-secondary" onClick={handleClear}>Limpiar</button>
         </div>
 

@@ -1,7 +1,22 @@
-export function buildCvPrompt(masterCv: string, jobOffer: string, lang: string): string {
-  return `Eres un experto en redacción de CVs. Tu tarea es generar un CV PERSONALIZADO en HTML adaptado específicamente a la oferta de trabajo proporcionada.
+export function buildCvPrompt(masterCv: string, jobOffer: string, lang: string, reduceMore?: boolean): string {
+  const reduceBlock = reduceMore
+    ? `\nIMPORTANTE: el intento anterior se desbordó. Reduce drásticamente: máximo 3 experiencias, máximo 3 bullets por experiencia, bullets ≤14 palabras, resumen de 1 frase, máximo 4 categorías de skills.`
+    : '';
 
-INSTRUCCIONES CRÍTICAS:
+  return `REGLA INVIOLABLE: el CV resultante DEBE caber EN UNA SOLA HOJA A4. Esta regla es más importante que incluir información. Si dudas, RECORTA.
+
+Eres un experto en redacción de CVs técnicos. Tu tarea es generar un CV PERSONALIZADO en HTML adaptado a la oferta de trabajo proporcionada.
+
+RESTRICCIONES DE LONGITUD (1 PÁGINA):
+- Máximo 3-4 experiencias (solo las más relevantes para la oferta).
+- Máximo 3-4 bullets por experiencia; cada bullet ≤18 palabras.
+- Resumen profesional: 2 frases máximo.
+- Skills agrupadas en máximo 4-6 categorías, lista breve por categoría.
+- Omite secciones como "Docencia", "Voluntariado", "Proyectos personales" salvo que sean centrales para la oferta.
+- Omite certificaciones poco relevantes.
+- Idiomas: una línea compacta.
+
+INSTRUCCIONES:
 1. Analiza la oferta y extrae: rol, skills clave, requisitos, palabras clave del sector.
 2. Del CV maestro, SELECCIONA y REORDENA solo la información más relevante para esa oferta.
 3. Reescribe el resumen profesional alineándolo con el puesto concreto.
@@ -9,13 +24,13 @@ INSTRUCCIONES CRÍTICAS:
 5. En skills, prioriza las que pide la oferta.
 6. Idioma del CV: ${lang}.
 7. Sé veraz: NO inventes experiencias, empresas, fechas ni titulaciones. Solo reordena, reformula y selecciona.
-
+${reduceBlock}
 FORMATO DE SALIDA:
-Devuelve ÚNICAMENTE HTML válido (sin markdown, sin \`\`\`, sin explicaciones) usando EXACTAMENTE esta estructura y clases CSS (no inventes clases nuevas):
+Devuelve ÚNICAMENTE el HTML (sin markdown, sin \`\`\`, sin explicaciones) usando EXACTAMENTE esta estructura y clases CSS:
 
 <div class="cv">
   <h1 class="cv-name">[NOMBRE COMPLETO]</h1>
-  <p class="cv-role">[ROL OBJETIVO adaptado a la oferta]</p>
+  <p class="cv-role">[ ROL OBJETIVO · AÑOS EXPERIENCIA ]</p>
   <div class="cv-contact">
     <span>[email]</span>
     <span>[teléfono]</span>
@@ -23,22 +38,26 @@ Devuelve ÚNICAMENTE HTML válido (sin markdown, sin \`\`\`, sin explicaciones) 
     <span>[linkedin si existe]</span>
   </div>
 
-  <h2 class="cv-section">Resumen</h2>
-  <p class="cv-summary">[2-4 frases adaptadas a la oferta]</p>
+  <h2 class="cv-section">Perfil</h2>
+  <p class="cv-summary">[2 frases MAX adaptadas a la oferta]</p>
 
   <h2 class="cv-section">Experiencia</h2>
   <div class="cv-item">
     <div class="cv-item-header">
-      <h3 class="cv-item-title">[Puesto] · [Empresa]</h3>
-      <span class="cv-item-meta">[Fecha inicio – fecha fin]</span>
+      <h3 class="cv-item-title">[Empresa]</h3>
+      <span class="cv-item-meta">[Fecha inicio — fecha fin]</span>
     </div>
-    <p class="cv-item-subtitle">[Ubicación o sector si aplica]</p>
+    <p class="cv-item-subtitle">[Puesto]</p>
     <ul>
-      <li>[Logro/responsabilidad orientado a la oferta]</li>
-      <li>[Otro logro con métrica si la hay]</li>
+      <li>[Logro/responsabilidad ≤18 palabras]</li>
     </ul>
   </div>
-  [repite cv-item por cada experiencia relevante, máx 4-5]
+
+  <h2 class="cv-section">Stack técnico</h2>
+  <div class="cv-skill-group">
+    <span class="cv-skill-group-label">[Categoría]:</span>
+    <span class="cv-skill-group-items">[skills separados por coma]</span>
+  </div>
 
   <h2 class="cv-section">Formación</h2>
   <div class="cv-item">
@@ -48,13 +67,6 @@ Devuelve ÚNICAMENTE HTML válido (sin markdown, sin \`\`\`, sin explicaciones) 
     </div>
     <p class="cv-item-subtitle">[Institución]</p>
   </div>
-
-  <h2 class="cv-section">Skills</h2>
-  <div class="cv-skill-group">
-    <span class="cv-skill-group-label">[Categoría, ej: Lenguajes]:</span>
-    <span class="cv-skill-group-items">[skills separados por coma]</span>
-  </div>
-  [repite cv-skill-group por cada categoría]
 
   <h2 class="cv-section">Idiomas</h2>
   <div class="cv-skill-group">
