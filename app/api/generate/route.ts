@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { isAuthenticated } from '@/lib/session';
 import { getRedis, CV_KEY } from '@/lib/redis';
-import { buildCvPrompt } from '@/lib/prompt';
+import { buildCvPrompt, SYSTEM_MESSAGE } from '@/lib/prompt';
 
 // Permitir ejecución larga (generación tarda 15-30s)
 export const maxDuration = 60;
@@ -38,6 +38,8 @@ export async function POST(req: Request) {
     const msg = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 2500,
+      temperature: 0,
+      system: SYSTEM_MESSAGE,
       messages: [{ role: 'user', content: prompt }],
     });
 
