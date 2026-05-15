@@ -3,7 +3,7 @@
 :root {
   --bg: #fafaf7;
   --panel: #ffffff;
-  --ink: #1a1a1a;
+  --ink: #1c1a16;
   --ink-soft: #4a4a4a;
   --ink-muted: #8a8a85;
   --line: #e5e3dc;
@@ -82,133 +82,322 @@ textarea.large { min-height: 140px; }
 .login-card h1 { font-size: 20px; margin: 0 0 4px; }
 .login-card .subtitle { margin-bottom: 24px; }
 
-/* ============ CV PREVIEW — Engineered Design ============ */
-.cv-wrap { background: white; border: 1px solid var(--line); border-radius: var(--radius); padding: 0; max-width: 800px; margin: 0 auto; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+/* ==========================================================
+   CV PREVIEW — Engineered Design
+   Replica of cv-design.html: Inter + JetBrains Mono,
+   two-column header, numbered sections, metrics row,
+   skill tag grid, monospace bullets.
+   ========================================================== */
+
+.cv-wrap {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
 .cv {
   padding: 14mm 16mm;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
   color: #1c1a16;
-  line-height: 1.42;
-  font-size: 10pt;
+  line-height: 1.4;
+  font-size: 9pt;
 }
 .cv-empty { padding: 80px 40px; text-align: center; color: var(--ink-muted); }
 .cv-empty h2 { font-size: 16px; color: var(--ink-soft); margin: 0 0 8px; font-weight: 500; }
 .cv-empty p { font-size: 13px; margin: 0; max-width: 360px; margin: 0 auto; line-height: 1.6; }
 
-/* Name */
-.cv h1.cv-name {
-  font-size: 22pt;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0 0 2pt;
-  color: #1c1a16;
-  line-height: 1;
+/* --- Header: two-column layout --- */
+.cv .cv-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 10pt;
+}
+.cv .cv-header-left { flex: 1; }
+.cv .cv-header-right {
+  text-align: right;
+  flex-shrink: 0;
 }
 
-/* Role tag — monospace, bracket style */
+/* Role tag */
 .cv .cv-role {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8pt;
+  font-size: 8.5pt;
   font-weight: 400;
-  color: #4a4a4a;
-  letter-spacing: 0.12em;
+  color: #1c1a16;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  margin: 0 0 4pt;
+}
+
+/* Name */
+.cv h1.cv-name {
+  font-size: 24pt;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   margin: 0 0 6pt;
+  color: #1c1a16;
+  line-height: 1;
 }
 
 /* Contact row */
 .cv .cv-contact {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8pt;
-  color: #4a4a4a;
-  margin: 0 0 12pt;
+  font-size: 8.5pt;
+  color: #1c1a16;
+  margin: 0;
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
   line-height: 1.4;
 }
 
-/* Section headers — numbered style */
-.cv h2.cv-section {
-  font-family: 'Inter', sans-serif;
-  font-size: 10pt;
-  font-weight: 700;
-  letter-spacing: -0.005em;
+/* Status box (right column) */
+.cv .cv-status-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  letter-spacing: 0.16em;
   color: #1c1a16;
-  margin: 12pt 0 6pt;
+  margin: 0 0 2pt;
+}
+.cv .cv-status-value {
+  font-size: 9.5pt;
+  color: #1c1a16;
+  margin: 0;
+}
+
+/* --- Metrics row --- */
+.cv .cv-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid #e5e3dc;
+  border-bottom: 1px solid #e5e3dc;
+  margin-bottom: 12pt;
+  padding: 8pt 0;
+}
+.cv .cv-metric { text-align: center; }
+.cv .cv-metric-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16pt;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #1c1a16;
+  display: block;
+  line-height: 1;
+  margin-bottom: 2pt;
+}
+.cv .cv-metric-label {
+  font-size: 7pt;
+  letter-spacing: 0.06em;
+  color: #6a6a6a;
+  text-transform: uppercase;
+  display: block;
+}
+
+/* --- Sections container --- */
+.cv .cv-sections {
+  display: grid;
+  gap: 12pt;
+}
+
+/* --- Section header: numbered --- */
+.cv .cv-section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6pt;
+  border-bottom: 1px solid #e5e3dc;
   padding-bottom: 3pt;
-  border-bottom: 1.5px solid #1c1a16;
-  text-transform: none;
 }
-.cv h2.cv-section:first-of-type { margin-top: 0; }
+.cv .cv-section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: #8a8a85;
+  letter-spacing: 0.1em;
+}
+.cv .cv-section-title {
+  font-size: 10.5pt;
+  font-weight: 700;
+  color: #1c1a16;
+  letter-spacing: -0.005em;
+}
+.cv .cv-section-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: #8a8a85;
+  margin-left: auto;
+}
 
-/* Summary / Profile */
+/* --- Summary / Profile --- */
 .cv .cv-summary {
-  font-size: 9pt;
+  font-size: 9.5pt;
   line-height: 1.5;
-  color: #2a2a2a;
-  margin: 0 0 4pt;
+  color: #1c1a16;
+  margin: 0;
 }
 
-/* Experience items */
-.cv .cv-item { margin-bottom: 7pt; }
+/* --- Experience items --- */
+.cv .cv-item { margin-bottom: 8pt; }
+.cv .cv-item:last-child { margin-bottom: 0; }
 .cv .cv-item-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 12px;
-  margin-bottom: 1pt;
+  margin-bottom: 0;
 }
 .cv .cv-item-title {
-  font-size: 10pt;
+  font-size: 11pt;
   font-weight: 700;
   color: #1c1a16;
   margin: 0;
+  display: inline;
+}
+.cv .cv-item-client {
+  font-size: 8.5pt;
+  font-weight: 400;
+  color: #4a4a4a;
 }
 .cv .cv-item-meta {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5pt;
-  color: #6a6a6a;
+  font-size: 8pt;
+  color: #1c1a16;
   white-space: nowrap;
-  font-variant-numeric: tabular-nums;
 }
 
 /* Subtitle — role in monospace */
 .cv .cv-item-subtitle {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8pt;
-  color: #4a4a4a;
-  margin: 0 0 3pt;
+  font-size: 8.5pt;
+  color: #1c1a16;
+  margin: 1pt 0 3pt;
   letter-spacing: 0.01em;
 }
 
-/* Bullet lists */
+/* Bullet lists — monospace like the design */
 .cv .cv-item ul {
   margin: 2pt 0 0;
   padding-left: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2pt;
 }
 .cv .cv-item ul li {
-  margin-bottom: 1.5pt;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 8.5pt;
-  color: #2a2a2a;
+  color: #1c1a16;
   line-height: 1.42;
 }
-.cv .cv-item ul li::marker { color: #aaa; }
+.cv .cv-item ul li::marker { color: #8a8a85; }
 
-/* Skill groups */
-.cv .cv-skill-group { margin-bottom: 4pt; }
+/* --- Skills grid --- */
+.cv .cv-skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8pt;
+}
+.cv .cv-skill-group {
+  flex: 1 1 140px;
+  min-width: 0;
+}
 .cv .cv-skill-group-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 7.5pt;
+  font-size: 8pt;
   font-weight: 400;
   color: #1c1a16;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-right: 6px;
+  display: block;
+  margin-bottom: 3pt;
 }
-.cv .cv-skill-group-items {
+.cv .cv-skill-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 1pt;
+}
+.cv .cv-skill-tag {
+  font-size: 8pt;
+  color: #1c1a16;
+  line-height: 1.4;
+}
+
+/* --- Certifications --- */
+.cv .cv-cert {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  margin-bottom: 3pt;
+}
+.cv .cv-cert-year {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 8.5pt;
-  color: #2a2a2a;
+  color: #1c1a16;
+  flex-shrink: 0;
+}
+.cv .cv-cert-name {
+  font-size: 9pt;
+  color: #1c1a16;
+}
+.cv .cv-cert-issuer {
+  font-size: 8pt;
+  color: #6a6a6a;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* --- Languages --- */
+.cv .cv-lang-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 3pt;
+}
+.cv .cv-lang-name {
+  font-size: 9pt;
+  color: #1c1a16;
+  min-width: 55px;
+}
+.cv .cv-lang-bar {
+  flex: 1;
+  height: 3px;
+  background: #e5e3dc;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.cv .cv-lang-bar-fill {
+  height: 100%;
+  background: #1c1a16;
+  border-radius: 2px;
+}
+.cv .cv-lang-level {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: #1c1a16;
+  min-width: 45px;
+  text-align: right;
+}
+
+/* --- Formación simple --- */
+.cv .cv-edu-title {
+  font-size: 10pt;
+  font-weight: 700;
+  color: #1c1a16;
+  margin: 0;
+}
+.cv .cv-edu-institution {
+  font-size: 8.5pt;
+  color: #4a4a4a;
+  margin: 0 0 1pt;
+}
+.cv .cv-edu-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8pt;
+  color: #1c1a16;
 }
 
 /* ============ PRINT — force ONE A4 page ============ */
@@ -218,9 +407,7 @@ textarea.large { min-height: 140px; }
   .app { display: block; }
   .sidebar, .main > .toolbar, .main > .status { display: none !important; }
   .main { padding: 0; }
-  .cv-wrap { border: none; box-shadow: none; max-width: none; margin: 0; width: 210mm; height: 297mm; overflow: hidden; }
-  .cv { padding: 14mm 16mm; font-size: 10pt; height: 297mm; overflow: hidden; }
-  .cv h1.cv-name { font-size: 22pt; }
+  .cv-wrap { border: none; box-shadow: none; max-width: none; margin: 0; border-radius: 0; width: 210mm; height: 297mm; overflow: hidden; }
+  .cv { padding: 14mm 16mm; font-size: 9pt; height: 297mm; overflow: hidden; }
   .cv .cv-item { page-break-inside: avoid; }
-  .cv h2.cv-section { page-break-after: avoid; }
 }
