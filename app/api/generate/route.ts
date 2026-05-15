@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { isAuthenticated } from '@/lib/session';
 import { getRedis, CV_KEY } from '@/lib/redis';
 import { buildCvPrompt, SYSTEM_MESSAGE } from '@/lib/prompt';
+import { renderCvHtml, type CvData } from '@/lib/template';
 
 // Permitir ejecución larga (generación tarda 15-30s)
 export const maxDuration = 60;
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
   try {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
-      return NextResponse.json({ error: 'ANTHROPIC_API_KEY no configurada' }, { status: 500 });
+      return NextResponse.json({ error: 'Configuración incompleta del servidor' }, { status: 500 });
     }
 
     const { jobOffer, lang, reduceMore } = await req.json();
@@ -44,21 +45,48 @@ export async function POST(req: Request) {
     });
 
     const textBlock = msg.content.find(b => b.type === 'text');
-    let html = textBlock && textBlock.type === 'text' ? textBlock.text : '';
-    html = html.replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/, '').trim();
+    let raw = textBlock && textBlock.type === 'text' ? textBlock.text : '';
 
-    if (!html.includes('class="cv"')) {
+    // Strip markdown wrappers if any
+    raw = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/, '').trim();
+
+    // Parse JSON
+    let cvData: CvData;
+    try {
+      cvData = JSON.parse(raw);
+    } catch {
+      console.error('Failed to parse CV JSON:', raw.slice(0, 500));
       return NextResponse.json(
-        { error: 'El modelo no devolvió la estructura esperada. Intenta de nuevo.' },
+        { error: 'El modelo no devolvió JSON válido. Intenta de nuevo.' },
         { status: 502 }
       );
     }
+
+    // Validate minimum fields
+    if (!cvData.name || !cvData.experience || !Array.isArray(cvData.experience)) {
+      return NextResponse.json(
+        { error: 'El modelo devolvió datos incompletos. Intenta de nuevo.' },
+        { status: 502 }
+      );
+    }
+
+    // Ensure defaults for optional fields
+    cvData.metrics = cvData.metrics || [];
+    cvData.skills = cvData.skills || [];
+    cvData.languages = cvData.languages || [];
+    cvData.contact = cvData.contact || {};
+    cvData.summary = cvData.summary || '';
+    cvData.role = cvData.role || '';
+    cvData.status = cvData.status || '';
+
+    // Render HTML with the Engineered template
+    const html = renderCvHtml(cvData);
 
     return NextResponse.json({ html });
   } catch (e: any) {
     console.error('generate error:', e);
     return NextResponse.json(
-      { error: e.message || 'Error desconocido' },
+      { error: 'Error al generar el CV. Intenta de nuevo.' },
       { status: 500 }
     );
   }
