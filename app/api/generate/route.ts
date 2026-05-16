@@ -71,7 +71,6 @@ export async function POST(req: Request) {
     }
 
     // Ensure defaults for optional fields
-    cvData.metrics = cvData.metrics || [];
     cvData.skills = cvData.skills || [];
     cvData.languages = cvData.languages || [];
     cvData.contact = cvData.contact || {};
@@ -79,7 +78,7 @@ export async function POST(req: Request) {
     cvData.role = cvData.role || '';
     cvData.status = cvData.status || '';
 
-    // Render HTML with the Engineered template
+    // Render HTML with the Minimal template
     const html = renderCvHtml(cvData);
 
     return NextResponse.json({ html });

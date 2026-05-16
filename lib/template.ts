@@ -6,7 +6,6 @@ export interface CvData {
   role: string;
   contact: { email?: string; phone?: string; location?: string; linkedin?: string };
   status: string;
-  metrics: { value: string; label: string }[];
   summary: string;
   experience: {
     company: string;

@@ -31,12 +31,6 @@ ${jobOffer}
   "role": "rol objetivo · X+ años",
   "contact": { "email": "...", "phone": "...", "location": "...", "linkedin": "..." },
   "status": "Ciudad · Remoto/Híbrido/Presencial",
-  "metrics": [
-    { "value": "5+", "label": "AÑOS EN X" },
-    { "value": "99.9%", "label": "MÉTRICA REAL" },
-    { "value": "M+", "label": "OTRA MÉTRICA" },
-    { "value": "−40%", "label": "MEJORA LOGRADA" }
-  ],
   "summary": "Dos frases máximo alineadas con la oferta.",
   "experience": [
     {
@@ -61,7 +55,6 @@ ${jobOffer}
 }
 
 IMPORTANTE:
-- metrics: EXACTAMENTE 4, con datos reales del CV (años experiencia, métricas de logros, etc.)
 - Si no hay certificaciones, pon array vacío []
 - Si no hay client, omite el campo
 - percent de idiomas: Nativo=100, C2=95, C1=85, B2=75, B1=60, A2=40
