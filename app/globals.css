@@ -407,8 +407,8 @@ textarea.large { min-height: 140px; }
   .app { display: block; }
   .sidebar, .main > .toolbar, .main > .status { display: none !important; }
   .main { padding: 0; }
-  .cv-wrap { border: none; box-shadow: none; max-width: none; margin: 0; border-radius: 0; width: 210mm; height: 297mm; overflow: hidden; }
-  .cv { height: 297mm; overflow: hidden; }
+  .cv-wrap { border: none; box-shadow: none; max-width: none; margin: 0; border-radius: 0; width: 210mm; }
+  .cv { }
   .cv .cv-item { page-break-inside: avoid; }
   .cv .cv-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .cv .cv-item-subtitle { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
