@@ -1,11 +1,11 @@
 export const SYSTEM_MESSAGE = `Eres un generador de CVs. Devuelves SOLO JSON válido, sin markdown, sin explicaciones, sin texto extra. Respetas siempre los límites de longitud.`;
 
 export function buildCvPrompt(masterCv: string, jobOffer: string, lang: string, reduceMore?: boolean): string {
-  const maxExp = reduceMore ? 3 : 4;
+  const maxExp = reduceMore ? 2 : 3;
   const maxBullets = reduceMore ? 2 : 3;
-  const maxBulletWords = reduceMore ? 14 : 18;
-  const maxSummaryWords = reduceMore ? 20 : 40;
-  const maxSkillCats = reduceMore ? 4 : 6;
+  const maxBulletWords = reduceMore ? 10 : 12;
+  const maxSummaryWords = reduceMore ? 15 : 25;
+  const maxSkillCats = reduceMore ? 3 : 4;
 
   return `Genera un CV personalizado para la oferta. Devuelve SOLO JSON válido.
 
@@ -20,8 +20,8 @@ ${jobOffer}
 - UNA PÁGINA A4: recorta si es necesario
 - Máximo ${maxExp} experiencias, ${maxBullets} bullets cada una (≤${maxBulletWords} palabras/bullet)
 - Resumen: máximo ${maxSummaryWords} palabras
-- Máximo ${maxSkillCats} categorías de skills, 5 items por categoría
-- Máximo 3 certificaciones relevantes
+- Máximo ${maxSkillCats} categorías de skills, máximo 4 items por categoría
+- Máximo 2 certificaciones relevantes
 - Omitir Docencia/Voluntariado salvo que la oferta lo pida
 - NO inventes datos
 

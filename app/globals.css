@@ -289,41 +289,31 @@ textarea.large { min-height: 140px; }
 }
 .cv .cv-item ul li::marker { color: var(--cv-green-light); }
 
-/* --- Skills grid --- */
-.cv .cv-skills-grid {
+/* --- Skills compact inline --- */
+.cv .cv-skills-compact {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8pt;
+  flex-direction: column;
+  gap: 3pt;
 }
-.cv .cv-skill-group {
-  flex: 1 1 140px;
-  min-width: 0;
+.cv .cv-skill-row {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  line-height: 1.4;
 }
-/* Skill category label — green monospace uppercase */
 .cv .cv-skill-group-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8pt;
+  font-size: 7.5pt;
   font-weight: 400;
   color: var(--cv-green);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  display: block;
-  margin-bottom: 3pt;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
-/* Skill tags — sage pill style */
-.cv .cv-skill-tags {
-  display: flex;
-  flex-direction: column;
-  gap: 2pt;
-}
-.cv .cv-skill-tag {
+.cv .cv-skill-items {
   font-size: 8pt;
   color: var(--cv-text);
-  background: var(--cv-tag-bg);
-  display: inline-block;
-  padding: 1pt 6pt;
-  border-radius: 2px;
-  line-height: 1.4;
 }
 
 /* --- Certifications --- */
@@ -407,8 +397,8 @@ textarea.large { min-height: 140px; }
   .app { display: block; }
   .sidebar, .main > .toolbar, .main > .status { display: none !important; }
   .main { padding: 0; }
-  .cv-wrap { border: none; box-shadow: none; max-width: none; margin: 0; border-radius: 0; width: 210mm; }
-  .cv { }
+  .cv-wrap { border: none; box-shadow: none; max-width: none; margin: 0; border-radius: 0; width: 210mm; max-height: 297mm; overflow: hidden; }
+  .cv { max-height: 297mm; overflow: hidden; }
   .cv .cv-item { page-break-inside: avoid; }
   .cv .cv-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .cv .cv-item-subtitle { -webkit-print-color-adjust: exact; print-color-adjust: exact; }

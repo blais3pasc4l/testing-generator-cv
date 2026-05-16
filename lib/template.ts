@@ -71,24 +71,21 @@ ${bulletsHtml}
 ${expItems}
     </section>`);
 
-  // 03 Stack técnico
-  const skillGroups = d.skills.map(sg => {
-    const tags = sg.items.map(s => `          <span class="cv-skill-tag">${esc(s)}</span>`).join('\n');
-    return `        <div class="cv-skill-group">
-          <span class="cv-skill-group-label">${esc(sg.category)}</span>
-          <div class="cv-skill-tags">
-${tags}
-          </div>
-        </div>`;
-  }).join('\n');
+  // 03 Stack técnico — compact inline format
+  const skillRows = d.skills.map(sg =>
+    `        <div class="cv-skill-row">
+          <span class="cv-skill-group-label">${esc(sg.category)}:</span>
+          <span class="cv-skill-items">${sg.items.map(s => esc(s)).join(', ')}</span>
+        </div>`
+  ).join('\n');
 
   sections.push(`    <section>
       <div class="cv-section-header">
         <span class="cv-section-num">${pad(num++)}</span>
         <span class="cv-section-title">Stack técnico</span>
       </div>
-      <div class="cv-skills-grid">
-${skillGroups}
+      <div class="cv-skills-compact">
+${skillRows}
       </div>
     </section>`);
 
